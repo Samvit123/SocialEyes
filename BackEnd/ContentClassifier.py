@@ -6,17 +6,20 @@ import json
 import os
 
 from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
 import six
 import timeout_decorator
 import signal
 
-profanity = 0
 poffensive = 0
 loffensive = 0
 
-profanity_list = []
 poffensive_list = []
 loffensive_list = []
+
+
+client = language.LanguageServiceClient()
 
 
 f=open("/home/samvit/Desktop/lastoutput.txt","w+")
@@ -51,6 +54,7 @@ with open("/home/samvit/Desktop/outputone.txt","r") as o:
 
 i=0
 total = 0
+neutral=0
 while i<len(r):
     text= str(r[i]).rstrip('\n')
 
@@ -76,6 +80,7 @@ while i<len(r):
         text = text+" "+text1
 
     try:
+        sentiment = client.analyze_sentiment(document=document).document_sentiment
         analysis = classify(text)
         if analysis:
             for key in analysis:
@@ -83,17 +88,16 @@ while i<len(r):
                     w.write("category: "+key+" ")
                     w.write("confidence: "+str(analysis[key]))
                     w.write("\n")
-                if "adult" in key.lower():
-                    profanity+=1
-                    profanity_list.append(text1)
-                elif ("people & society" in key.lower() or "sensitive subjects" in key.lower()) and float(analysis[key])<0.5:
+
+                elif (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and (float(analysis[key])<0.5 and sentiment.score>-0.25)):
                     poffensive+=1
                     poffensive_list.append(text1)
-                elif ("people & society" in key.lower() or "sensitive subjects" in key.lower()) and float(analysis[key])>=0.5:
+                elif (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and ((float(analysis[key])>=0.5) and sentiment.score<=-0.25)) or "adult" in key.lower():
                     loffensive+=1
                     loffensive_list.append(text1)
                 else:
                     pass
+                    neutral+=1
                 print (i)
                 total+=1
                 break
@@ -108,9 +112,10 @@ while i<len(r):
     i+=1
 
 with open("/home/samvit/Desktop/final.txt","a+") as w:
-    w.write(("Profanity:"))
-    for v in profanity_list:
-        w.write("\n"+v)
+    w.write("\n\nContent Distribution: ")
+    w.write("\nPercent potentially offensive: "+str(float(poffensive/total)*100))
+    w.write("\nPercent likely offensive: "+str(float(loffensive/total)*100))
+    w.write("\nPercent neutral: "+str(float(neutral/total)*100))
 
     w.write(("\n\nPotentially offensive:"))
     for v in poffensive_list:
@@ -120,10 +125,8 @@ with open("/home/samvit/Desktop/final.txt","a+") as w:
     for v in loffensive_list:
         w.write("\n"+v)
 
-
 print ("------------")
 print (total)
-print (profanity)
 print(poffensive)
 print (loffensive)
 print ("------------")
