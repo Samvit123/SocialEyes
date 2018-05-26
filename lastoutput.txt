@@ -1,0 +1,17 @@
+category: /News confidence: 0.569999992847
+category: /News/Politics confidence: 0.540000021458
+category: /People & Society confidence: 0.560000002384
+category: /Reference/General Reference/Biographies & Quotations confidence: 0.550000011921
+category: /Books & Literature confidence: 0.649999976158
+
+
+
+category: /People & Society confidence: 0.550000011921
+category: /News/Politics confidence: 0.759999990463
+category: /Law & Government/Public Safety/Crime & Justice confidence: 0.730000019073
+category: /News confidence: 0.579999983311
+category: /Sensitive Subjects confidence: 0.920000016689
+category: /People & Society confidence: 0.589999973774
+
+category: /Law & Government/Government confidence: 0.709999978542
+category: /News/Politics confidence: 0.810000002384
