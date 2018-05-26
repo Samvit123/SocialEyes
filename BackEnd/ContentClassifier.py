@@ -8,9 +8,7 @@ import os
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
-import six
-import timeout_decorator
-import signal
+
 
 poffensive = 0
 loffensive = 0
@@ -21,11 +19,13 @@ loffensive_list = []
 
 client = language.LanguageServiceClient()
 
+file1 = open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/final.txt","w")
+file1.close()
 
-f=open("/home/samvit/Desktop/lastoutput.txt","w+")
+f=open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","w+")
 f.close()
 
-fo=open("/home/samvit/Desktop/lastoutput.txt","w")
+fo=open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","w")
 fo.close()
 
 
@@ -49,7 +49,7 @@ def classify(text, verbose=True):
 
     return result
 
-with open("/home/samvit/Desktop/outputone.txt","r") as o:
+with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/outputone.txt","r") as o:
     r=o.readlines()
 
 i=0
@@ -79,49 +79,53 @@ while i<len(r):
     while len(text.split(" "))<=20:
         text = text+" "+text1
 
-    try:
-        sentiment = client.analyze_sentiment(document=document).document_sentiment
-        analysis = classify(text)
-        if analysis:
-            for key in analysis:
-                with open("/home/samvit/Desktop/lastoutput.txt","a+") as w:
-                    w.write("category: "+key+" ")
-                    w.write("confidence: "+str(analysis[key]))
-                    w.write("\n")
+    document = types.Document(
+		content=text,
+		type=enums.Document.Type.PLAIN_TEXT)
 
-                elif (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and (float(analysis[key])<0.5 and sentiment.score>-0.25)):
-                    poffensive+=1
-                    poffensive_list.append(text1)
-                elif (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and ((float(analysis[key])>=0.5) and sentiment.score<=-0.25)) or "adult" in key.lower():
-                    loffensive+=1
-                    loffensive_list.append(text1)
-                else:
-                    pass
-                    neutral+=1
-                print (i)
-                total+=1
-                break
-        else:
-            with open("/home/samvit/Desktop/lastoutput.txt","a+") as w:
+    sentiment = client.analyze_sentiment(document=document).document_sentiment
+    analysis = classify(text)
+
+    if analysis:
+        for key in analysis:
+            with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","a+") as w:
+                print "category: "+key+" "
+                print "confidence: "+str(analysis[key])
+                w.write("category: "+key+" ")
+                w.write("confidence: "+str(analysis[key]))
                 w.write("\n")
 
-    except:
-    	with open("/home/samvit/Desktop/lastoutput.txt","a+") as w:
+            if (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and (float(analysis[key])<0.5 or sentiment.score>-0.25)):
+                poffensive+=1
+                poffensive_list.append(text1)
+            elif (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and ((float(analysis[key])>=0.5) and sentiment.score<=-0.25)) or "adult" in key.lower():
+                loffensive+=1
+                loffensive_list.append(text1)
+            else:
+                pass
+                neutral+=1
+            print (i)
+            total+=1
+
+    else:
+        print "error"
+        with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","a+") as w:
             w.write("\n")
 
     i+=1
 
-with open("/home/samvit/Desktop/final.txt","a+") as w:
+with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/final.txt","a+") as w:
     w.write("\n\nContent Distribution: ")
-    w.write("\nPercent potentially offensive: "+str(float(poffensive/total)*100))
-    w.write("\nPercent likely offensive: "+str(float(loffensive/total)*100))
-    w.write("\nPercent neutral: "+str(float(neutral/total)*100))
+    w.write("\nPercent potentially offensive: "+str(round((float(poffensive)/total)*100)))
+    w.write("\nPercent likely offensive: "+str(round((float(loffensive)/total)*100)))
+    w.write("\nPercent neutral: "+str(round((float(neutral)/total)*100)))
 
-    w.write(("\n\nPotentially offensive:"))
+    w.write("\n===========================")
+    w.write(("\n\nPotentially offensive:\n=========================="))
     for v in poffensive_list:
         w.write("\n"+v)
 
-    w.write(("\n\nLikely offensive:"))
+    w.write(("\n\nLikely offensive:\n=========================="))
     for v in loffensive_list:
         w.write("\n"+v)
 
@@ -131,7 +135,6 @@ print(poffensive)
 print (loffensive)
 print ("------------")
 print ("Profanity list: ")
-print (profanity_list)
 print ("Potentially offensive list: ")
 print (poffensive_list)
 print ("Likely offensive list: ")
