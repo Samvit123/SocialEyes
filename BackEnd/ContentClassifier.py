@@ -19,13 +19,13 @@ loffensive_list = []
 
 client = language.LanguageServiceClient()
 
-file1 = open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/final.txt","w")
+file1 = open("final.txt","w")
 file1.close()
 
-f=open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","w+")
+f=open("lastoutput.txt","w+")
 f.close()
 
-fo=open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","w")
+fo=open("lastoutput.txt","w")
 fo.close()
 
 
@@ -49,7 +49,7 @@ def classify(text, verbose=True):
 
     return result
 
-with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/outputone.txt","r") as o:
+with open("outputone.txt","r") as o:
     r=o.readlines()
 
 i=0
@@ -88,7 +88,7 @@ while i<len(r):
 
     if analysis:
         for key in analysis:
-            with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","a+") as w:
+            with open("lastoutput.txt","a+") as w:
                 print "category: "+key+" "
                 print "confidence: "+str(analysis[key])
                 w.write("category: "+key+" ")
@@ -109,7 +109,7 @@ while i<len(r):
 
     else:
         print "error"
-        with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/lastoutput.txt","a+") as w:
+        with open("lastoutput.txt","a+") as w:
             w.write("\n")
 
     i+=1
@@ -118,7 +118,7 @@ percent_poffensive = str(round((float(poffensive)/total)*100))
 percent_loffensive = str(round((float(loffensive)/total)*100))
 percent_neut = str(round((float(neutral)/total)*100))
 
-with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/final.txt","a+") as w:
+with open("final.txt","a+") as w:
     w.write("\n\nContent Distribution: ")
     w.write("\nPercent potentially offensive: "+percent_poffensive)
     w.write("\nPercent likely offensive: "+percent_loffensive)
