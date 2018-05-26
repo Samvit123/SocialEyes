@@ -95,7 +95,7 @@ while i<len(r):
                 w.write("confidence: "+str(analysis[key]))
                 w.write("\n")
 
-            if (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and (float(analysis[key])<0.5 or sentiment.score>-0.25)):
+            if (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and (float(analysis[key])<0.5 and (sentiment.score>-0.25 and sentiment.score<0.25))):
                 poffensive+=1
                 poffensive_list.append(text1)
             elif (("people & society" in key.lower() or "sensitive subjects" in key.lower()) and ((float(analysis[key])>=0.5) and sentiment.score<=-0.25)) or "adult" in key.lower():
@@ -114,11 +114,15 @@ while i<len(r):
 
     i+=1
 
+percent_poffensive = str(round((float(poffensive)/total)*100))
+percent_loffensive = str(round((float(loffensive)/total)*100))
+percent_neut = str(round((float(neutral)/total)*100))
+
 with open("C:/Users/samvi/Downloads/SocialEye-20180526T122132Z-001/SocialEye/final.txt","a+") as w:
     w.write("\n\nContent Distribution: ")
-    w.write("\nPercent potentially offensive: "+str(round((float(poffensive)/total)*100)))
-    w.write("\nPercent likely offensive: "+str(round((float(loffensive)/total)*100)))
-    w.write("\nPercent neutral: "+str(round((float(neutral)/total)*100)))
+    w.write("\nPercent potentially offensive: "+percent_poffensive)
+    w.write("\nPercent likely offensive: "+percent_loffensive)
+    w.write("\nPercent neutral: "+percent_neut)
 
     w.write("\n===========================")
     w.write(("\n\nPotentially offensive:\n=========================="))
