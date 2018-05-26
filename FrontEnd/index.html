@@ -20,11 +20,10 @@
           <h5 class="header col s12 light">An online service which scans your tweets and assesses their potential offensiveness</h5>
         </div>
         <div class="row center">
-          <a href="" id="download-button" class="btn-large waves-effect waves-color:#1dcaff">Enter your Twitter Handle</a>
+          <a id="download-button" class="btn-large waves-effect waves-color:#1dcaff">Enter your Twitter Handle</a>
 		  <form action="{{ url_for('addRegion') }}" method="post">
 			<input type="text" placeholder="Example: @therealdonaldtrump">
-			
-			<a href="stats.html" id="download-button" class="btn-large waves-effect waves-color:#1dcaff">Go!</a>
+			<input type="submit" value="Submit">
 			</form>
         </div>
         <br><br>
@@ -64,7 +63,7 @@
             <h2 class="center brown-text"><i class="material-icons large">settings</i></h2>
             <h5 class="center">Secure</h5>
 
-            <p class="light">By logging into Twitter from the site, nobody else can see your analysis and we do not collect any information.</p>
+            <p class="light">We do not collect or store any of your information.</p>
           </div>
         </div>
       </div>
@@ -75,7 +74,7 @@
   <footer class="page-footer teal">
     <div class="container">
       <div class="row" style="margin-bottom: 0;">
-        <div class="col l6 s12">
+        <div class="col s12">
           <h5 class="white-text">Privacy Policy</h5>
           <p class="grey-text text-lighten-4">None of your data will be stored or used for any other purpose than for detecting offensive content.</p>
   </footer>

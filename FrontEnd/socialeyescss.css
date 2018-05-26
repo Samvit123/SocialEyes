@@ -33,6 +33,20 @@ p {
   }
 }
 
+input[type=text] {
+	width: 50%;
+	border: 2px solid teal;
+	color: white;
+	
+}
+
+input[type=submit] {
+	width: 15%;
+	background-color: teal;
+	border: 2px solid teal;
+	border-radius: 4px;
+	color: white;
+}
 img {
 	opacity: 1;
 }
