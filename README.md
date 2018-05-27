@@ -1,7 +1,7 @@
 # SocialEyes
 *Won First Place at MakeSPP 2018*
 
-SocialEyes is a product designed to provide users with a complete analysis of their posts to social media platforms such as twitter.
+SocialEyes is a product designed to provide users with a complete analysis of their posts to social media platforms such as Twitter.
 
 Living in an age where we meet more people online than in person, the only image people thousands of miles away have of you, is the image you create through your online activity such as social media posts.
 
